@@ -26,7 +26,7 @@ def uber (qualquercoisa):
     variavel['Mes'] = variavel.index[:].month_name()
     variavel['Ano'] = variavel.index[:].year
     
-    return(variavel)
+    return variavel
 
 
 def identificar (nomedoarquivo):
