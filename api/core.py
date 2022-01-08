@@ -12,3 +12,38 @@ def mercadolivre(filename):
     dfd3 = vendas
 
     return dfd3
+
+
+def uber (qualquercoisa):
+    meuFile = pd.read_excel(qualquercoisa, engine='openpyxl')
+    df_data = pd.DataFrame(data=meuFile)
+    df_data.drop(df_data[df_data.Data == "TOTAL"].index, inplace=True)
+    df_data.drop(df_data[df_data.Data == "MÊS TOTAL"].index, inplace=True)
+    df_data.drop(df_data[df_data.Data.isnull()].index, inplace=True)
+    variavel = df_data.groupby(pd.Grouper(key='Data',freq='M')).sum()
+    variavel['Percentual'] = ((variavel['Ganhos do Dia'] - variavel['R$ Combustivel']) * 100) / variavel['R$ Combustivel']
+    variavel = variavel[['Percentual']]
+    variavel['Mes'] = variavel.index[:].month_name()
+    variavel['Ano'] = variavel.index[:].year
+    
+    return variavel
+
+
+def identificar (nomedoarquivo):
+    cabecalhoUber = ['Data', 'Ganhos do Dia', 'km', 'corridas', 'R$  litro', 'R$ Combustivel', 'Lucro dia', 'Horas']
+    cabecalhoML = ['N° NF-e', 'Data da tarifa', 'Número da tarifa', 'Detalhe', 'Descontado da operação', 'Status da tarifa', 'Tarifa estornada', 'Valor da tarifa', 'Valor da tarifa sem desconto', 'Valor del descuento', 'Motivo', 'Número de venda', 'Pagamento', 'Data de venda', 'Canal de vendas', 'Cliente', 'Quantidade vendida', 'Preço unitário', 'Valor da transação', 'Número de envio', 'Número da embalagem', 'Envio por conta do cliente', 'Número do anúncio', 'Título do anúncio', 'Tipo do anúncio', 'Categoria do anúncio', 'Código ML']
+
+    meuFile = pd.read_excel(nomedoarquivo, engine='openpyxl')
+    df_data = pd.DataFrame(data=meuFile)
+    if (df_data.columns.values.tolist() == cabecalhoUber):
+        print("lista do uber")
+    else:
+        if ((len(df_data.index)) > 5):
+            if (df_data.loc[6].values.tolist() == cabecalhoML):
+                print("Lista do ML")
+            else:
+                print("Lista personalizada")
+        else:
+            print("Lista personalizada")
+            
+    return df_data.columns.values
