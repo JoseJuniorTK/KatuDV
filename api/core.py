@@ -32,18 +32,25 @@ def uber (qualquercoisa):
 def identificar (nomedoarquivo):
     cabecalhoUber = ['Data', 'Ganhos do Dia', 'km', 'corridas', 'R$  litro', 'R$ Combustivel', 'Lucro dia', 'Horas']
     cabecalhoML = ['N° NF-e', 'Data da tarifa', 'Número da tarifa', 'Detalhe', 'Descontado da operação', 'Status da tarifa', 'Tarifa estornada', 'Valor da tarifa', 'Valor da tarifa sem desconto', 'Valor del descuento', 'Motivo', 'Número de venda', 'Pagamento', 'Data de venda', 'Canal de vendas', 'Cliente', 'Quantidade vendida', 'Preço unitário', 'Valor da transação', 'Número de envio', 'Número da embalagem', 'Envio por conta do cliente', 'Número do anúncio', 'Título do anúncio', 'Tipo do anúncio', 'Categoria do anúncio', 'Código ML']
+    cabecalhoShopeeM = ['Data', 'Vendas (BRL)', 'Pedidos', 'Vendas por Pedido', 'Visualizações da Página', 'Visitantes', 'Taxa de Conversão (por pedido pago)', 'Pedidos Cancelados', 'Vendas Canceladas', 'Pedidos Devolvidos / Reembolsados', 'Vendas Devolvidas / Reembolsadas', '# de compradores', '# de novos compradores', '# de compradores existentes', '# de compradores em potencial', 'Repetir Índice de Compras']
+    cabecalhoShopeeA = ['Data', 'Vendas (BRL)', 'Pedidos', 'Vendas por Pedido', 'Visualizações da Página', 'Visitantes', 'Taxa de Conversão (por pedido pago)', 'Pedidos Cancelados', 'Vendas Canceladas', 'Pedidos Devolvidos / Reembolsados', 'Vendas Devolvidas / Reembolsadas']
 
     meuFile = pd.read_excel(nomedoarquivo, engine='openpyxl')
     df_data = pd.DataFrame(data=meuFile)
     if (df_data.columns.values.tolist() == cabecalhoUber):
         print("lista do uber")
     else:
-        if ((len(df_data.index)) > 5):
-            if (df_data.loc[6].values.tolist() == cabecalhoML):
-                print("Lista do ML")
-            else:
-                print("Lista personalizada")
+        if (df_data.columns.values.tolist() == cabecalhoShopeeM):
+            print("Lista da Shopee (mensal)")
         else:
-            print("Lista personalizada")
-            
+            if(df_data.columns.values.tolist() == cabecalhoShopeeA):
+                print("Lista da Shopee (anual)")
+            else:
+                if ((len(df_data.index)) > 5):
+                    if (df_data.loc[6].values.tolist() == cabecalhoML):
+                        print("Lista do Mercado Livre")
+                    else:
+                        print("Lista personalizada")
+                else:
+                    print("Lista personalizada")
     return df_data.columns.values
