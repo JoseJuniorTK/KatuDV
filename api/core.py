@@ -13,6 +13,22 @@ def mercadolivre(filename):
 
     return dfd3
 
+def lucroShopee(filename):
+    my_file = pd.read_excel(filename, engine='openpyxl')
+    df_data = pd.DataFrame(data=my_file)
+    df_data.drop(df_data.index[[0, 1, 2]], inplace=True)
+    df_data['Vendas (BRL)'] = df_data['Vendas (BRL)'].str.replace(",", ".").astype(float)
+    df_data['Vendas Canceladas'] = df_data['Vendas Canceladas'].str.replace(",", ".").astype(float)
+    df_data['Lucro'] = df_data.apply(lambda row: row['Vendas (BRL)'] - row['Vendas Canceladas'], axis=1)
+
+    mediaLucro = df_data['Lucro'].mean()
+    futuroMes = datetime.strptime(df_data.tail(1)['Data'].values[0], '%d/%m/%Y') + pd.DateOffset(months=1)
+    novaLinha = {
+        'Data da tarifa': [futuroMes],
+        'Lucro': [mediaLucro]
+    }
+    return (novaLinha)
+
 
 def uber (qualquercoisa):
     meuFile = pd.read_excel(qualquercoisa, engine='openpyxl')
